@@ -64,11 +64,10 @@ public void OpenMapsMenu(int client, bool zoned)
         return;
     }
 
-    char buffer[512];
     Menu menu = new Menu(MapsMenuHandler);
-    Format(buffer, sizeof(buffer), "%s Maps:\n", zoned ? "Zoned" : "Unzoned");
-    menu.SetTitle(buffer);
-
+	char buffer[512];
+	int i_mapsCount = 0;
+	
     for (int i = 0; i < g_aAllMapsList.Length; i++)
     {
         g_aAllMapsList.GetString(i, buffer, sizeof(buffer));
@@ -83,8 +82,12 @@ public void OpenMapsMenu(int client, bool zoned)
         if ((zoned && isZoned) || (!zoned && !isZoned))
         {
             menu.AddItem(buffer, buffer);
+            i_mapsCount++;
         }
     }
+
+    Format(buffer, sizeof(buffer), "%s Maps (%d):\n", zoned ? "Zoned" : "Unzoned", i_mapsCount);
+    menu.SetTitle(buffer);
     menu.Display(client, MENU_TIME_FOREVER);
 }
 
